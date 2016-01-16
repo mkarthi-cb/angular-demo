@@ -5,11 +5,53 @@ All Rights Reserved.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Angular error demo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--<script src="js/libs/angular.js/angular.min.js" type="text/javascript"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular.min.js"></script>
+        <link href="styles/angular-material.min.css" rel="stylesheet"/>
+        <script src="js/angular-material.min.js"></script>
+        <script src="js/angular-animate.min.js"></script>
+        <script src="js/angular-aria.min.js"></script> 
+        <script src="js/angular-messages.min.js"></script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div id="scp" ng-app="demoApp" ng-controller="demoAppContrl">
+            <div layout="row" layout-align="center center">
+                <md-gird-list md-cols="5">
+                    <div style="margin-top: 50px;">Test form</div><br>
+                    <form name="testForm" id="testForm">
+                        <md-input-container>
+                            <label>test input</label>
+                            <input name="testText" type="text" ng-model="test" ng-blur="check()"/>
+                            <div ng-messages="testForm.testText.$error" style="color:maroon" role="alert">
+                                <div class="msg" ng-message="message">{{testForm.testText.$error.message}}</div>
+                            </div>
+                        </md-input-container>
+
+                    </form>
+                </md-gird-list>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var demoApp = angular.module('demoApp', ['ngMaterial','ngMessages']);
+            demoApp.controller('demoAppContrl', function ($scope,$parse) {
+                $scope.test = '';
+                $scope.check = function () {
+                    if ($scope.test!=='test') {
+                        var currFlag = $parse('testForm.testText.$error.message');
+                        $scope.testForm.$setValidity('testText', false);
+                        currFlag.assign($scope, "worn format");
+                    }else{
+                        var currFlag = $parse('testForm.testText.$error.message');
+                        $scope.testForm.$setValidity('testText', null);
+                        
+                        currFlag.assign($scope, null);
+                        $scope.testForm.$setPristine();
+                    }
+                };
+            });
+        </script>
     </body>
 </html>
